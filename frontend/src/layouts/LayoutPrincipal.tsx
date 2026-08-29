@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
-import { LayoutDashboard, LogOut, Package, Printer } from "lucide-react";
+import { LayoutDashboard, LogOut, Package, Printer, Truck, Users } from "lucide-react";
 import { usarAutenticacao } from "../contextos/ContextoAutenticacao.js";
 
 export const LayoutPrincipal: React.FC = () => {
@@ -45,8 +45,32 @@ export const LayoutPrincipal: React.FC = () => {
               <Package size={16} />
               <span>Produtos</span>
             </NavLink>
+
+            <NavLink
+              to="/fornecedores"
+              className={({ isActive }) =>
+                `item-menu-topo ${isActive ? "ativo" : ""}`
+              }
+              data-testid="link-menu-fornecedores"
+            >
+              <Truck size={16} />
+              <span>Fornecedores</span>
+            </NavLink>
+
+            <NavLink
+              to="/clientes"
+              className={({ isActive }) =>
+                `item-menu-topo ${isActive ? "ativo" : ""}`
+              }
+              data-testid="link-menu-clientes"
+            >
+              <Users size={16} />
+              <span>Clientes</span>
+            </NavLink>
           </nav>
         </div>
+
+
 
         <div className="perfil-topo">
           <div className="usuario-info">

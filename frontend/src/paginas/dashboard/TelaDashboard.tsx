@@ -1,5 +1,5 @@
 import React from "react";
-import { CheckCircle2, Shield, User, Clock, Key } from "lucide-react";
+import { CheckCircle2, Shield, Clock } from "lucide-react";
 import { usarAutenticacao } from "../../contextos/ContextoAutenticacao.js";
 
 export const TelaDashboard: React.FC = () => {

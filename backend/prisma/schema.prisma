@@ -31,3 +31,28 @@ model Produto {
 
   @@map("produtos")
 }
+
+model Fornecedor {
+  id            Int       @id @default(autoincrement())
+  nome          String
+  observacao    String?   @db.Text
+  ativo         Boolean   @default(true)
+  criado_em     DateTime  @default(now())
+  atualizado_em DateTime  @updatedAt
+
+  @@map("fornecedores")
+}
+
+model Cliente {
+  id            Int       @id @default(autoincrement())
+  nome          String
+  telefone      String?
+  observacao    String?   @db.Text
+  ativo         Boolean   @default(true)
+  criado_em     DateTime  @default(now())
+  atualizado_em DateTime  @updatedAt
+
+  @@map("clientes")
+}
+
+

@@ -8,6 +8,9 @@ import { configuracaoAmbiente } from "./configuracao/ambiente.js";
 import { tratadorErros } from "./compartilhado/erros/tratador_erros.js";
 import { rotasAutenticacao } from "./modulos/autenticacao/rotas/rotas_autenticacao.js";
 import { rotasProdutos } from "./modulos/produtos/rotas/rotas_produtos.js";
+import { rotasFornecedores } from "./modulos/fornecedores/rotas/rotas_fornecedores.js";
+import { rotasClientes } from "./modulos/clientes/rotas/rotas_clientes.js";
+
 
 export function criarAplicativo() {
   const aplicativo = fastify({
@@ -51,12 +54,13 @@ export function criarAplicativo() {
     "application/json",
     { parseAs: "string" },
     (req, body, done) => {
-      if (!body || (typeof body === "string" && body.trim() === "")) {
+      const conteudoTexto = typeof body === "string" ? body : body.toString("utf-8");
+      if (!conteudoTexto || conteudoTexto.trim() === "") {
         done(null, {});
         return;
       }
       try {
-        const json = JSON.parse(body);
+        const json = JSON.parse(conteudoTexto);
         done(null, json);
       } catch (err) {
         done(err as Error, undefined);
@@ -79,6 +83,9 @@ export function criarAplicativo() {
   // Registro dos módulos da aplicação
   aplicativo.register(rotasAutenticacao);
   aplicativo.register(rotasProdutos);
+  aplicativo.register(rotasFornecedores);
+  aplicativo.register(rotasClientes);
 
   return aplicativo;
 }
+
