@@ -29,6 +29,10 @@ model Produto {
   criado_em          DateTime @default(now())
   atualizado_em      DateTime @updatedAt
 
+  compras               Compra[]
+  vendas                Venda[]
+  movimentacoes_estoque MovimentacaoEstoque[]
+
   @@map("produtos")
 }
 
@@ -39,6 +43,8 @@ model Fornecedor {
   ativo         Boolean   @default(true)
   criado_em     DateTime  @default(now())
   atualizado_em DateTime  @updatedAt
+
+  compras       Compra[]
 
   @@map("fornecedores")
 }
@@ -52,7 +58,72 @@ model Cliente {
   criado_em     DateTime  @default(now())
   atualizado_em DateTime  @updatedAt
 
+  vendas        Venda[]
+
   @@map("clientes")
 }
 
+model Compra {
+  id             Int       @id @default(autoincrement())
+  data_compra    DateTime  @default(now())
+  produto_id     Int
+  quantidade     Int
+  valor_unitario Decimal   @db.Decimal(15, 2)
+  valor_total    Decimal   @db.Decimal(15, 2)
+  fornecedor_id  Int
+  criado_em      DateTime  @default(now())
+  atualizado_em  DateTime  @updatedAt
 
+  produto        Produto    @relation(fields: [produto_id], references: [id])
+  fornecedor     Fornecedor @relation(fields: [fornecedor_id], references: [id])
+
+  @@map("compras")
+}
+
+model MovimentacaoEstoque {
+  id              Int      @id @default(autoincrement())
+  produto_id      Int
+  tipo            String
+  quantidade      Int
+  tipo_referencia String?
+  referencia_id   Int?
+  observacao      String?  @db.Text
+  criado_em       DateTime @default(now())
+
+  produto         Produto  @relation(fields: [produto_id], references: [id])
+
+  @@map("movimentacoes_estoque")
+}
+
+model LancamentoFinanceiro {
+  id              Int       @id @default(autoincrement())
+  tipo            String
+  descricao       String
+  valor           Decimal   @db.Decimal(15, 2)
+  data_lancamento DateTime  @default(now())
+  categoria       String
+  tipo_referencia String?
+  referencia_id   Int?
+  observacao      String?   @db.Text
+  criado_em       DateTime  @default(now())
+  atualizado_em   DateTime  @updatedAt
+
+  @@map("lancamentos_financeiros")
+}
+
+model Venda {
+  id             Int       @id @default(autoincrement())
+  data_venda     DateTime  @default(now())
+  cliente_id     Int
+  produto_id     Int
+  quantidade     Int
+  valor_unitario Decimal   @db.Decimal(15, 2)
+  valor_total    Decimal   @db.Decimal(15, 2)
+  criado_em      DateTime  @default(now())
+  atualizado_em  DateTime  @updatedAt
+
+  cliente        Cliente   @relation(fields: [cliente_id], references: [id])
+  produto        Produto   @relation(fields: [produto_id], references: [id])
+
+  @@map("vendas")
+}

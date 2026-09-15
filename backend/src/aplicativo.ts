@@ -10,6 +10,8 @@ import { rotasAutenticacao } from "./modulos/autenticacao/rotas/rotas_autenticac
 import { rotasProdutos } from "./modulos/produtos/rotas/rotas_produtos.js";
 import { rotasFornecedores } from "./modulos/fornecedores/rotas/rotas_fornecedores.js";
 import { rotasClientes } from "./modulos/clientes/rotas/rotas_clientes.js";
+import { rotasCompras } from "./modulos/compras/rotas/rotas_compras.js";
+import { rotasVendas } from "./modulos/vendas/rotas/rotas_vendas.js";
 
 
 export function criarAplicativo() {
@@ -85,6 +87,8 @@ export function criarAplicativo() {
   aplicativo.register(rotasProdutos);
   aplicativo.register(rotasFornecedores);
   aplicativo.register(rotasClientes);
+  aplicativo.register(rotasCompras);
+  aplicativo.register(rotasVendas);
 
   return aplicativo;
 }

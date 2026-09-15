@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
-import { LayoutDashboard, LogOut, Package, Printer, Truck, Users } from "lucide-react";
+import { LayoutDashboard, LogOut, Package, Printer, ShoppingBag, ShoppingCart, Truck, Users } from "lucide-react";
 import { usarAutenticacao } from "../contextos/ContextoAutenticacao.js";
 
 export const LayoutPrincipal: React.FC = () => {
@@ -33,6 +33,28 @@ export const LayoutPrincipal: React.FC = () => {
             >
               <LayoutDashboard size={16} />
               <span>Dashboard</span>
+            </NavLink>
+
+            <NavLink
+              to="/vendas"
+              className={({ isActive }) =>
+                `item-menu-topo ${isActive ? "ativo" : ""}`
+              }
+              data-testid="link-menu-vendas"
+            >
+              <ShoppingBag size={16} />
+              <span>Vendas</span>
+            </NavLink>
+
+            <NavLink
+              to="/compras"
+              className={({ isActive }) =>
+                `item-menu-topo ${isActive ? "ativo" : ""}`
+              }
+              data-testid="link-menu-compras"
+            >
+              <ShoppingCart size={16} />
+              <span>Compras</span>
             </NavLink>
 
             <NavLink
