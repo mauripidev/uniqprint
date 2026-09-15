@@ -92,6 +92,8 @@ model MovimentacaoEstoque {
 
   produto         Produto  @relation(fields: [produto_id], references: [id])
 
+  @@index([produto_id, tipo])
+  @@index([criado_em])
   @@map("movimentacoes_estoque")
 }
 
