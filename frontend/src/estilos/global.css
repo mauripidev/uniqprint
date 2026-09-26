@@ -882,3 +882,248 @@ body {
   background-color: rgba(255, 255, 255, 0.01);
   border-top: 1px solid var(--borda-suave);
 }
+
+/* ========================================================
+   MÓDULO DE ESTOQUE
+   ======================================================== */
+
+/* Badges de Status de Estoque */
+.badge-status-estoque {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: var(--raio-completo);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.badge-status-normal {
+  background-color: rgba(59, 130, 246, 0.12);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.25);
+}
+
+.badge-status-baixo {
+  background-color: rgba(245, 158, 11, 0.12);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.badge-status-sem_estoque {
+  background-color: rgba(239, 68, 68, 0.12);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Badges de Tipo de Movimentação */
+.badge-mov-tipo {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--raio-pequeno);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.badge-mov-entrada {
+  background-color: var(--sucesso-fundo);
+  color: var(--sucesso);
+  border: 1px solid var(--sucesso-borda);
+}
+
+.badge-mov-saida {
+  background-color: var(--erro-fundo);
+  color: var(--erro);
+  border: 1px solid var(--erro-borda);
+}
+
+.badge-mov-ajuste {
+  background-color: rgba(168, 85, 247, 0.12);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.25);
+}
+
+/* Cards Indicadores de Estoque */
+.grid-cards-resumo-estoque {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.card-indicador-estoque {
+  background-color: var(--fundo-superficie);
+  border: 1px solid var(--borda-suave);
+  border-radius: var(--raio-borda);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: var(--transicao);
+}
+
+.card-indicador-estoque:hover {
+  border-color: var(--borda-forte);
+}
+
+.card-indicador-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.card-indicador-titulo {
+  font-size: 0.8125rem;
+  color: var(--texto-mutado);
+  font-weight: 500;
+}
+
+.card-indicador-valor {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--texto-titulo);
+  line-height: 1.2;
+}
+
+.card-indicador-icone {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--raio-pequeno);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-indicador-icone.total {
+  background-color: rgba(59, 130, 246, 0.12);
+  color: #60a5fa;
+}
+
+.card-indicador-icone.baixo {
+  background-color: rgba(245, 158, 11, 0.12);
+  color: #fbbf24;
+}
+
+.card-indicador-icone.zerado {
+  background-color: rgba(239, 68, 68, 0.12);
+  color: #f87171;
+}
+
+/* Modais de Estoque */
+.conteudo-modal-largo {
+  background-color: var(--fundo-superficie);
+  border: 1px solid var(--borda-suave);
+  border-radius: var(--raio-borda);
+  width: 100%;
+  max-width: 650px;
+  box-shadow: var(--sombra-modal);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.conteudo-modal-historico {
+  background-color: var(--fundo-superficie);
+  border: 1px solid var(--borda-suave);
+  border-radius: var(--raio-borda);
+  width: 100%;
+  max-width: 820px;
+  max-height: 90vh;
+  box-shadow: var(--sombra-modal);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Painel de Prévia do Estoque */
+.painel-previa-estoque {
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--borda-suave);
+  border-radius: var(--raio-pequeno);
+  padding: 1rem 1.25rem;
+  margin: 1.25rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.previa-bloco {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.previa-rotulo {
+  font-size: 0.75rem;
+  color: var(--texto-mutado);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.previa-numero-atual {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--texto-corpo);
+}
+
+.previa-separador-seta {
+  color: var(--texto-fraco);
+}
+
+.previa-numero-novo {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.previa-numero-novo.valido {
+  color: var(--sucesso);
+}
+
+.previa-numero-novo.invalido {
+  color: var(--erro);
+}
+
+/* Seletor Segmentado de Tipo de Ajuste */
+.seletor-tipo-ajuste {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.botao-opcao-ajuste {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--raio-pequeno);
+  border: 1px solid var(--borda-suave);
+  background-color: rgba(255, 255, 255, 0.02);
+  color: var(--texto-mutado);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: var(--transicao);
+}
+
+.botao-opcao-ajuste:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--texto-corpo);
+}
+
+.botao-opcao-ajuste.ativo-entrada {
+  background-color: var(--sucesso-fundo);
+  border-color: var(--sucesso-borda);
+  color: var(--sucesso);
+}
+
+.botao-opcao-ajuste.ativo-saida {
+  background-color: var(--erro-fundo);
+  border-color: var(--erro-borda);
+  color: var(--erro);
+}
+

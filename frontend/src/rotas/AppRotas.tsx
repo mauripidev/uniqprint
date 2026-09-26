@@ -9,6 +9,8 @@ import { TelaFornecedores } from "../paginas/fornecedores/TelaFornecedores.js";
 import { TelaClientes } from "../paginas/clientes/TelaClientes.js";
 import { TelaCompras } from "../paginas/compras/TelaCompras.js";
 import { TelaVendas } from "../paginas/vendas/TelaVendas.js";
+import { TelaFinanceiro } from "../paginas/financeiro/TelaFinanceiro.js";
+import { TelaEstoque } from "../paginas/estoque/TelaEstoque.js";
 import { RotaProtegida } from "./RotaProtegida.js";
 
 export const AppRotas: React.FC = () => {
@@ -31,9 +33,11 @@ export const AppRotas: React.FC = () => {
             <Route index element={<TelaDashboard />} />
             <Route path="vendas" element={<TelaVendas />} />
             <Route path="compras" element={<TelaCompras />} />
+            <Route path="estoque" element={<TelaEstoque />} />
             <Route path="produtos" element={<TelaProdutos />} />
             <Route path="fornecedores" element={<TelaFornecedores />} />
             <Route path="clientes" element={<TelaClientes />} />
+            <Route path="financeiro" element={<TelaFinanceiro />} />
           </Route>
 
 

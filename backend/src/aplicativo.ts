@@ -12,6 +12,8 @@ import { rotasFornecedores } from "./modulos/fornecedores/rotas/rotas_fornecedor
 import { rotasClientes } from "./modulos/clientes/rotas/rotas_clientes.js";
 import { rotasCompras } from "./modulos/compras/rotas/rotas_compras.js";
 import { rotasVendas } from "./modulos/vendas/rotas/rotas_vendas.js";
+import { rotasEstoque } from "./modulos/estoque/rotas/rotas_estoque.js";
+import { rotasFinanceiro } from "./modulos/financeiro/rotas/rotas_financeiro.js";
 
 
 export function criarAplicativo() {
@@ -89,6 +91,8 @@ export function criarAplicativo() {
   aplicativo.register(rotasClientes);
   aplicativo.register(rotasCompras);
   aplicativo.register(rotasVendas);
+  aplicativo.register(rotasEstoque);
+  aplicativo.register(rotasFinanceiro);
 
   return aplicativo;
 }
