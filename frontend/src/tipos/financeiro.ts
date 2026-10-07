@@ -34,6 +34,7 @@ export interface DadosAtualizarLancamentoFinanceiro extends Partial<DadosCriarLa
 export interface ResumoFinanceiro {
   total_entradas: number;
   total_saidas: number;
+  saldo: number;
   saldo_atual: number;
 }
 

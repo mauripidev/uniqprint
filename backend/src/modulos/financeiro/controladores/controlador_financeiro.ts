@@ -1,7 +1,9 @@
 import { FastifyReply, FastifyRequest } from "fastify";
+import { ErroAplicacao } from "../../../compartilhado/erros/erro_aplicacao.js";
 import { ServicoFinanceiro } from "../servicos/servico_financeiro.js";
 import {
   schemaConsultarLancamentos,
+  schemaConsultarSaldo,
   schemaCriarLancamento,
   schemaAtualizarLancamento
 } from "../dtos/financeiro_dto.js";
@@ -15,9 +17,17 @@ export class ControladorFinanceiro {
     return res.status(200).send(resultado);
   };
 
+  calcularSaldo = async (req: FastifyRequest, res: FastifyReply) => {
+    const filtros = schemaConsultarSaldo.parse(req.query);
+    const resultado = await this.servico.calcularSaldo(filtros);
+    return res.status(200).send(resultado);
+  };
+
   buscarPorId = async (req: FastifyRequest<{ Params: { id: string } }>, res: FastifyReply) => {
     const id = parseInt(req.params.id, 10);
-    if (isNaN(id)) return res.status(400).send({ mensagem: "ID inválido" });
+    if (isNaN(id)) {
+      throw new ErroAplicacao("ID inválido", "ID_INVALIDO", 400);
+    }
 
     const resultado = await this.servico.buscarPorId(id);
     return res.status(200).send(resultado);
@@ -31,7 +41,9 @@ export class ControladorFinanceiro {
 
   atualizar = async (req: FastifyRequest<{ Params: { id: string } }>, res: FastifyReply) => {
     const id = parseInt(req.params.id, 10);
-    if (isNaN(id)) return res.status(400).send({ mensagem: "ID inválido" });
+    if (isNaN(id)) {
+      throw new ErroAplicacao("ID inválido", "ID_INVALIDO", 400);
+    }
 
     const dados = schemaAtualizarLancamento.parse(req.body);
     const resultado = await this.servico.atualizar(id, dados);
@@ -40,7 +52,9 @@ export class ControladorFinanceiro {
 
   excluir = async (req: FastifyRequest<{ Params: { id: string } }>, res: FastifyReply) => {
     const id = parseInt(req.params.id, 10);
-    if (isNaN(id)) return res.status(400).send({ mensagem: "ID inválido" });
+    if (isNaN(id)) {
+      throw new ErroAplicacao("ID inválido", "ID_INVALIDO", 400);
+    }
 
     await this.servico.excluir(id);
     return res.status(204).send();

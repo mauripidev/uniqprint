@@ -1,6 +1,7 @@
 import { ErroAplicacao } from "../../../compartilhado/erros/erro_aplicacao.js";
 import {
   RequisicaoConsultarLancamentos,
+  RequisicaoConsultarSaldo,
   RequisicaoCriarLancamento,
   RequisicaoAtualizarLancamento
 } from "../dtos/financeiro_dto.js";
@@ -14,7 +15,7 @@ export class ServicoFinanceiro {
 
   async listar(filtros: RequisicaoConsultarLancamentos) {
     const { pagina, limite, data_inicio, data_fim, categoria, tipo } = filtros;
-    
+
     const { lancamentos, total } = await this.repositorio.listar({
       pagina,
       limite,
@@ -24,11 +25,17 @@ export class ServicoFinanceiro {
       tipo
     });
 
-    const resumo = await this.repositorio.calcularResumo({ data_inicio, data_fim });
+    const resumo = await this.repositorio.calcularResumo({
+      data_inicio,
+      data_fim,
+      categoria,
+      tipo
+    });
+
     const totalPaginas = Math.ceil(total / limite) || 1;
 
     return {
-      dados: lancamentos.map(l => ({
+      dados: lancamentos.map((l) => ({
         id: l.id,
         tipo: l.tipo,
         descricao: l.descricao,
@@ -48,6 +55,10 @@ export class ServicoFinanceiro {
         total_paginas: totalPaginas
       }
     };
+  }
+
+  async calcularSaldo(filtros: RequisicaoConsultarSaldo) {
+    return this.repositorio.calcularResumo(filtros);
   }
 
   async buscarPorId(id: number) {
@@ -77,7 +88,7 @@ export class ServicoFinanceiro {
 
     if (lancamentoExistente.tipo_referencia && lancamentoExistente.tipo_referencia !== "MANUAL") {
       throw new ErroAplicacao(
-        "Não é possível editar um lançamento gerado automaticamente",
+        "Lançamento automático não pode ser alterado manualmente.",
         "LANCAMENTO_AUTOMATICO",
         400
       );
@@ -98,7 +109,7 @@ export class ServicoFinanceiro {
 
     if (lancamentoExistente.tipo_referencia && lancamentoExistente.tipo_referencia !== "MANUAL") {
       throw new ErroAplicacao(
-        "Não é possível excluir um lançamento gerado automaticamente",
+        "Lançamento automático não pode ser excluído.",
         "LANCAMENTO_AUTOMATICO",
         400
       );

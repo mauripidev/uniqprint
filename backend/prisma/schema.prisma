@@ -110,6 +110,10 @@ model LancamentoFinanceiro {
   criado_em       DateTime  @default(now())
   atualizado_em   DateTime  @updatedAt
 
+  @@index([data_lancamento])
+  @@index([tipo])
+  @@index([categoria])
+  @@index([tipo_referencia, referencia_id])
   @@map("lancamentos_financeiros")
 }
 
