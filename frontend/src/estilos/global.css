@@ -1270,3 +1270,146 @@ body {
   }
 }
 
+/* ==========================================================================
+   Relatórios Gerenciais
+   ========================================================================== */
+
+.pagina-relatorios {
+  display: flex;
+  flex-direction: column;
+}
+
+.cabecalho-impressao {
+  display: none;
+}
+
+.abas-relatorios {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--borda-suave);
+  padding-bottom: 0.25rem;
+  overflow-x: auto;
+}
+
+.aba-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--raio-borda) var(--raio-borda) 0 0;
+  color: var(--texto-mutado);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transicao);
+}
+
+.aba-item:hover {
+  color: var(--texto-titulo);
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.aba-item.ativa {
+  color: #38bdf8;
+  background-color: var(--fundo-superficie);
+  border-color: var(--borda-suave) var(--borda-suave) var(--fundo-superficie);
+  border-bottom: 2px solid #38bdf8;
+  font-weight: 600;
+}
+
+.painel-filtros-relatorio {
+  background-color: var(--fundo-superficie);
+  border: 1px solid var(--borda-suave);
+  border-radius: var(--raio-borda);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.linha-filtros-relatorio {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.acoes-filtros-relatorio {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.botao-imprimir {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ==========================================================================
+   Estilos de Impressão (window.print)
+   ========================================================================== */
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #111827 !important;
+  }
+
+  .barra-topo,
+  .acoes-pagina,
+  .botao-imprimir,
+  .abas-relatorios,
+  .painel-filtros-relatorio,
+  .paginacao-rodape,
+  .acoes-filtros-relatorio {
+    display: none !important;
+  }
+
+  .cabecalho-impressao {
+    display: block !important;
+    margin-bottom: 1.5rem;
+    color: #111827 !important;
+  }
+
+  .cabecalho-impressao h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+
+  .cabecalho-impressao p {
+    font-size: 0.875rem;
+    color: #4b5563;
+    margin: 0.2rem 0;
+  }
+
+  .card-metrica-financeira {
+    background-color: #f9fafb !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: none !important;
+  }
+
+  .valor-metrica {
+    color: #111827 !important;
+  }
+
+  .tabela-conteiner {
+    background-color: transparent !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: none !important;
+  }
+
+  .tabela th {
+    background-color: #f3f4f6 !important;
+    color: #374151 !important;
+    border-bottom: 1px solid #e5e7eb !important;
+  }
+
+  .tabela td {
+    color: #1f2937 !important;
+    border-bottom: 1px solid #e5e7eb !important;
+  }
+}
+
+

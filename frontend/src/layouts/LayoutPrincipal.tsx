@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
-import { LayoutDashboard, LogOut, Package, Printer, ShoppingBag, ShoppingCart, Truck, Users, Banknote, Warehouse } from "lucide-react";
+import { LayoutDashboard, LogOut, Package, Printer, ShoppingBag, ShoppingCart, Truck, Users, Banknote, Warehouse, BarChart3 } from "lucide-react";
 import { usarAutenticacao } from "../contextos/ContextoAutenticacao.js";
 
 export const LayoutPrincipal: React.FC = () => {
@@ -110,6 +110,17 @@ export const LayoutPrincipal: React.FC = () => {
             >
               <Banknote size={16} />
               <span>Financeiro</span>
+            </NavLink>
+
+            <NavLink
+              to="/relatorios"
+              className={({ isActive }) =>
+                `item-menu-topo ${isActive ? "ativo" : ""}`
+              }
+              data-testid="link-menu-relatorios"
+            >
+              <BarChart3 size={16} />
+              <span>Relatórios</span>
             </NavLink>
           </nav>
         </div>

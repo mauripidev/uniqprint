@@ -77,6 +77,7 @@ model Compra {
   produto        Produto    @relation(fields: [produto_id], references: [id])
   fornecedor     Fornecedor @relation(fields: [fornecedor_id], references: [id])
 
+  @@index([data_compra])
   @@map("compras")
 }
 
@@ -131,5 +132,6 @@ model Venda {
   cliente        Cliente   @relation(fields: [cliente_id], references: [id])
   produto        Produto   @relation(fields: [produto_id], references: [id])
 
+  @@index([data_venda])
   @@map("vendas")
 }
