@@ -5,7 +5,6 @@ import {
   ShoppingCart,
   Banknote,
   Printer,
-  Calendar,
   Filter,
   RotateCcw,
   TrendingUp,

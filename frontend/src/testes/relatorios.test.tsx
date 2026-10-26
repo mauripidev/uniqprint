@@ -187,31 +187,40 @@ describe("Módulo de Relatórios Gerenciais (Front-end)", () => {
       nome: "Administrador Uniqprint",
       email: "admin@uniqprint.com.br",
       papel: "ADMINISTRADOR",
-      ativo: true
+      ativo: true,
+      criado_em: new Date().toISOString(),
+      atualizado_em: new Date().toISOString(),
+      ultimo_login_em: new Date().toISOString()
     });
 
     vi.mocked(servicoProdutos.listarProdutos).mockResolvedValue({
       dados: produtosMock as any,
-      total: 1,
-      pagina: 1,
-      limite: 100,
-      total_paginas: 1
+      paginacao: {
+        total: 1,
+        pagina: 1,
+        limite: 100,
+        total_paginas: 1
+      }
     });
 
     vi.mocked(servicoClientes.listarClientes).mockResolvedValue({
       dados: clientesMock as any,
-      total: 1,
-      pagina: 1,
-      limite: 100,
-      total_paginas: 1
+      paginacao: {
+        total: 1,
+        pagina: 1,
+        limite: 100,
+        total_paginas: 1
+      }
     });
 
     vi.mocked(servicoFornecedores.listarFornecedores).mockResolvedValue({
       dados: fornecedoresMock as any,
-      total: 1,
-      pagina: 1,
-      limite: 100,
-      total_paginas: 1
+      paginacao: {
+        total: 1,
+        pagina: 1,
+        limite: 100,
+        total_paginas: 1
+      }
     });
 
     vi.mocked(servicoRelatorios.servicoRelatorios.obterRelatorioVendas).mockResolvedValue(

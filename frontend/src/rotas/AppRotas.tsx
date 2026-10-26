@@ -32,6 +32,7 @@ export const AppRotas: React.FC = () => {
             }
           >
             <Route index element={<TelaDashboard />} />
+            <Route path="dashboard" element={<TelaDashboard />} />
             <Route path="vendas" element={<TelaVendas />} />
             <Route path="compras" element={<TelaCompras />} />
             <Route path="estoque" element={<TelaEstoque />} />

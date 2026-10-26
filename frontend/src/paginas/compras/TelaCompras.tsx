@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import {
   AlertCircle,
   Calendar,
@@ -43,6 +44,16 @@ export const TelaCompras: React.FC = () => {
   const [erro, setErro] = useState<string | null>(null);
   const [mensagemSucesso, setMensagemSucesso] = useState<string | null>(null);
   const [modalNovoAberto, setModalNovoAberto] = useState<boolean>(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams.get("novo") === "true") {
+      setModalNovoAberto(true);
+      const novosParams = new URLSearchParams(searchParams);
+      novosParams.delete("novo");
+      setSearchParams(novosParams, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
 
   // Carregar opções de filtros uma vez
   useEffect(() => {
