@@ -1,9 +1,14 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { schemaCriarUsuario, schemaLogin } from "../dtos/autenticacao_dto.js";
 import { ServicoAutenticacao } from "../servicos/servico_autenticacao.js";
+import { ServicoAuditoria } from "../../auditoria/servicos/servico_auditoria.js";
+import { configuracaoAmbiente } from "../../../configuracao/ambiente.js";
 
 export class ControladorAutenticacao {
-  constructor(private servicoAutenticacao: ServicoAutenticacao = new ServicoAutenticacao()) {}
+  constructor(
+    private servicoAutenticacao: ServicoAutenticacao = new ServicoAutenticacao(),
+    private servicoAuditoria: ServicoAuditoria = new ServicoAuditoria()
+  ) { }
 
   async login(requisicao: FastifyRequest, resposta: FastifyReply) {
     const dados = schemaLogin.parse(requisicao.body);
@@ -23,9 +28,22 @@ export class ControladorAutenticacao {
     resposta.setCookie("token_sessao", token, {
       path: "/",
       httpOnly: true,
-      secure: process.env.AMBIENTE === "production",
+      secure: configuracaoAmbiente.COOKIE_SEGURO,
       sameSite: "lax",
       maxAge: 60 * 60 * 24 // 24 horas em segundos
+    });
+
+    // Registra auditoria de login com sucesso (sem dados sensíveis como senhas ou tokens)
+    await this.servicoAuditoria.registrarAuditoria({
+      usuario_id: usuario.id,
+      acao: "LOGIN",
+      entidade: "USUARIO",
+      entidade_id: usuario.id,
+      dados: {
+        email: usuario.email,
+        nome: usuario.nome,
+        papel: usuario.papel
+      }
     });
 
     return resposta.status(200).send({
@@ -41,7 +59,7 @@ export class ControladorAutenticacao {
     resposta.clearCookie("token_sessao", {
       path: "/",
       httpOnly: true,
-      secure: process.env.AMBIENTE === "production",
+      secure: configuracaoAmbiente.COOKIE_SEGURO,
       sameSite: "lax"
     });
 

@@ -5,6 +5,14 @@ import { LayoutPrincipal } from "../layouts/LayoutPrincipal.js";
 import { TelaLogin } from "../paginas/autenticacao/TelaLogin.js";
 import { TelaDashboard } from "../paginas/dashboard/TelaDashboard.js";
 import { TelaProdutos } from "../paginas/produtos/TelaProdutos.js";
+import { TelaFornecedores } from "../paginas/fornecedores/TelaFornecedores.js";
+import { TelaClientes } from "../paginas/clientes/TelaClientes.js";
+import { TelaCompras } from "../paginas/compras/TelaCompras.js";
+import { TelaVendas } from "../paginas/vendas/TelaVendas.js";
+import { TelaFinanceiro } from "../paginas/financeiro/TelaFinanceiro.js";
+import { TelaEstoque } from "../paginas/estoque/TelaEstoque.js";
+import { TelaRelatorios } from "../paginas/relatorios/TelaRelatorios.js";
+import { TelaAuditoria } from "../paginas/auditoria/TelaAuditoria.js";
 import { RotaProtegida } from "./RotaProtegida.js";
 
 export const AppRotas: React.FC = () => {
@@ -25,8 +33,19 @@ export const AppRotas: React.FC = () => {
             }
           >
             <Route index element={<TelaDashboard />} />
+            <Route path="dashboard" element={<TelaDashboard />} />
+            <Route path="vendas" element={<TelaVendas />} />
+            <Route path="compras" element={<TelaCompras />} />
+            <Route path="estoque" element={<TelaEstoque />} />
             <Route path="produtos" element={<TelaProdutos />} />
+            <Route path="fornecedores" element={<TelaFornecedores />} />
+            <Route path="clientes" element={<TelaClientes />} />
+            <Route path="financeiro" element={<TelaFinanceiro />} />
+            <Route path="relatorios" element={<TelaRelatorios />} />
+            <Route path="auditoria" element={<TelaAuditoria />} />
           </Route>
+
+
 
           {/* Rota padrão fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />

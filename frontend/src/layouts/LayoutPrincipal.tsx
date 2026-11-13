@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
-import { LayoutDashboard, LogOut, Package, Printer } from "lucide-react";
+import { LayoutDashboard, LogOut, Package, Printer, ShoppingBag, ShoppingCart, Truck, Users, Banknote, Warehouse, BarChart3, ShieldCheck } from "lucide-react";
 import { usarAutenticacao } from "../contextos/ContextoAutenticacao.js";
 
 export const LayoutPrincipal: React.FC = () => {
@@ -36,6 +36,39 @@ export const LayoutPrincipal: React.FC = () => {
             </NavLink>
 
             <NavLink
+              to="/vendas"
+              className={({ isActive }) =>
+                `item-menu-topo ${isActive ? "ativo" : ""}`
+              }
+              data-testid="link-menu-vendas"
+            >
+              <ShoppingBag size={16} />
+              <span>Vendas</span>
+            </NavLink>
+
+            <NavLink
+              to="/compras"
+              className={({ isActive }) =>
+                `item-menu-topo ${isActive ? "ativo" : ""}`
+              }
+              data-testid="link-menu-compras"
+            >
+              <ShoppingCart size={16} />
+              <span>Compras</span>
+            </NavLink>
+
+            <NavLink
+              to="/estoque"
+              className={({ isActive }) =>
+                `item-menu-topo ${isActive ? "ativo" : ""}`
+              }
+              data-testid="link-menu-estoque"
+            >
+              <Warehouse size={16} />
+              <span>Estoque</span>
+            </NavLink>
+
+            <NavLink
               to="/produtos"
               className={({ isActive }) =>
                 `item-menu-topo ${isActive ? "ativo" : ""}`
@@ -45,8 +78,67 @@ export const LayoutPrincipal: React.FC = () => {
               <Package size={16} />
               <span>Produtos</span>
             </NavLink>
+
+            <NavLink
+              to="/fornecedores"
+              className={({ isActive }) =>
+                `item-menu-topo ${isActive ? "ativo" : ""}`
+              }
+              data-testid="link-menu-fornecedores"
+            >
+              <Truck size={16} />
+              <span>Fornecedores</span>
+            </NavLink>
+
+            <NavLink
+              to="/clientes"
+              className={({ isActive }) =>
+                `item-menu-topo ${isActive ? "ativo" : ""}`
+              }
+              data-testid="link-menu-clientes"
+            >
+              <Users size={16} />
+              <span>Clientes</span>
+            </NavLink>
+
+            <NavLink
+              to="/financeiro"
+              className={({ isActive }) =>
+                `item-menu-topo ${isActive ? "ativo" : ""}`
+              }
+              data-testid="link-menu-financeiro"
+            >
+              <Banknote size={16} />
+              <span>Financeiro</span>
+            </NavLink>
+
+            <NavLink
+              to="/relatorios"
+              className={({ isActive }) =>
+                `item-menu-topo ${isActive ? "ativo" : ""}`
+              }
+              data-testid="link-menu-relatorios"
+            >
+              <BarChart3 size={16} />
+              <span>Relatórios</span>
+            </NavLink>
+
+            {usuario?.papel === "ADMINISTRADOR" && (
+              <NavLink
+                to="/auditoria"
+                className={({ isActive }) =>
+                  `item-menu-topo ${isActive ? "ativo" : ""}`
+                }
+                data-testid="link-menu-auditoria"
+              >
+                <ShieldCheck size={16} />
+                <span>Auditoria</span>
+              </NavLink>
+            )}
           </nav>
         </div>
+
+
 
         <div className="perfil-topo">
           <div className="usuario-info">

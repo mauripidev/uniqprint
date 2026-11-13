@@ -25,7 +25,8 @@ export async function requisicaoApi<T>(
   caminho: string,
   opcoes: RequestInit = {}
 ): Promise<T> {
-  const url = `${URL_BASE}${caminho.startsWith("/") ? caminho : `/${caminho}`}`;
+  const caminhoLimpo = caminho.startsWith("/api") ? caminho.slice(4) : caminho;
+  const url = `${URL_BASE}${caminhoLimpo.startsWith("/") ? caminhoLimpo : `/${caminhoLimpo}`}`;
 
   const cabecalhosPadrao: Record<string, string> = {
     "Content-Type": "application/json"
@@ -73,3 +74,42 @@ export async function requisicaoApi<T>(
     );
   }
 }
+
+export const api = {
+  get: async <T = any>(caminho: string, config?: { params?: Record<string, any> }): Promise<{ data: T }> => {
+    let query = "";
+    if (config?.params) {
+      const params = new URLSearchParams();
+      Object.entries(config.params).forEach(([chave, valor]) => {
+        if (valor !== undefined && valor !== null && valor !== "") {
+          params.append(chave, String(valor));
+        }
+      });
+      const qs = params.toString();
+      if (qs) query = `?${qs}`;
+    }
+    const data = await requisicaoApi<T>(`${caminho}${query}`, { method: "GET" });
+    return { data };
+  },
+
+  post: async <T = any>(caminho: string, corpo?: any): Promise<{ data: T }> => {
+    const data = await requisicaoApi<T>(caminho, {
+      method: "POST",
+      body: corpo !== undefined ? JSON.stringify(corpo) : undefined
+    });
+    return { data };
+  },
+
+  put: async <T = any>(caminho: string, corpo?: any): Promise<{ data: T }> => {
+    const data = await requisicaoApi<T>(caminho, {
+      method: "PUT",
+      body: corpo !== undefined ? JSON.stringify(corpo) : undefined
+    });
+    return { data };
+  },
+
+  delete: async <T = any>(caminho: string): Promise<{ data: T }> => {
+    const data = await requisicaoApi<T>(caminho, { method: "DELETE" });
+    return { data };
+  }
+};

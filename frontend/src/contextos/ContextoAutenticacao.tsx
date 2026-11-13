@@ -15,7 +15,7 @@ interface ContextoAutenticacaoTipo {
   recarregarUsuario: () => Promise<void>;
 }
 
-const ContextoAutenticacao = createContext<ContextoAutenticacaoTipo | undefined>(
+export const ContextoAutenticacao = createContext<ContextoAutenticacaoTipo | undefined>(
   undefined
 );
 

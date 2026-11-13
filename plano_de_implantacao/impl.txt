@@ -1,0 +1,7 @@
+
+implemente esta feature C:\projetos\uniqprint\plano_de_implantacao\entradas\entrada.md
+
+parou na implementação das compras/entradas
+
+de acordo com "### 1.2 Arquitetura", realizamos a fase que foi a de AUDITORIA E TESTE DE FLUXO COMPLETO PONTA A PONTA,
+Construa o prompt para a proxima implementação

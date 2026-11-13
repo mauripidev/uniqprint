@@ -3,11 +3,24 @@ import fastifyCors from "@fastify/cors";
 import fastifyHelmet from "@fastify/helmet";
 import fastifyJwt from "@fastify/jwt";
 import fastifyRateLimit from "@fastify/rate-limit";
+import fastifyStatic from "@fastify/static";
 import fastify from "fastify";
+import fs from "node:fs";
+import path from "node:path";
 import { configuracaoAmbiente } from "./configuracao/ambiente.js";
 import { tratadorErros } from "./compartilhado/erros/tratador_erros.js";
 import { rotasAutenticacao } from "./modulos/autenticacao/rotas/rotas_autenticacao.js";
 import { rotasProdutos } from "./modulos/produtos/rotas/rotas_produtos.js";
+import { rotasFornecedores } from "./modulos/fornecedores/rotas/rotas_fornecedores.js";
+import { rotasClientes } from "./modulos/clientes/rotas/rotas_clientes.js";
+import { rotasCompras } from "./modulos/compras/rotas/rotas_compras.js";
+import { rotasVendas } from "./modulos/vendas/rotas/rotas_vendas.js";
+import { rotasEstoque } from "./modulos/estoque/rotas/rotas_estoque.js";
+import { rotasFinanceiro } from "./modulos/financeiro/rotas/rotas_financeiro.js";
+import { rotasRelatorios } from "./modulos/relatorios/rotas/rotas_relatorios.js";
+import { rotasDashboard } from "./modulos/dashboard/rotas/rotas_dashboard.js";
+import { rotasAuditoria } from "./modulos/auditoria/rotas/rotas_auditoria.js";
+
 
 export function criarAplicativo() {
   const aplicativo = fastify({
@@ -51,12 +64,13 @@ export function criarAplicativo() {
     "application/json",
     { parseAs: "string" },
     (req, body, done) => {
-      if (!body || (typeof body === "string" && body.trim() === "")) {
+      const conteudoTexto = typeof body === "string" ? body : body.toString("utf-8");
+      if (!conteudoTexto || conteudoTexto.trim() === "") {
         done(null, {});
         return;
       }
       try {
-        const json = JSON.parse(body);
+        const json = JSON.parse(conteudoTexto);
         done(null, json);
       } catch (err) {
         done(err as Error, undefined);
@@ -79,6 +93,39 @@ export function criarAplicativo() {
   // Registro dos módulos da aplicação
   aplicativo.register(rotasAutenticacao);
   aplicativo.register(rotasProdutos);
+  aplicativo.register(rotasFornecedores);
+  aplicativo.register(rotasClientes);
+  aplicativo.register(rotasCompras);
+  aplicativo.register(rotasVendas);
+  aplicativo.register(rotasEstoque);
+  aplicativo.register(rotasFinanceiro);
+  aplicativo.register(rotasRelatorios);
+  aplicativo.register(rotasDashboard);
+  aplicativo.register(rotasAuditoria);
+
+  // Servir frontend em produção se a pasta dist existir
+  const caminhoDistFrontend = path.resolve(__dirname, "../../frontend/dist");
+
+  if (fs.existsSync(caminhoDistFrontend)) {
+    aplicativo.register(fastifyStatic, {
+      root: caminhoDistFrontend,
+      prefix: "/",
+      wildcard: false
+    });
+
+    aplicativo.setNotFoundHandler((requisicao, resposta) => {
+      if (requisicao.raw.url && requisicao.raw.url.startsWith("/api")) {
+        return resposta.status(404).send({
+          erro: {
+            codigo: "ROTA_NAO_ENCONTRADA",
+            mensagem: `Rota ${requisicao.method} ${requisicao.url} não encontrada`
+          }
+        });
+      }
+      return resposta.sendFile("index.html");
+    });
+  }
 
   return aplicativo;
 }
+
