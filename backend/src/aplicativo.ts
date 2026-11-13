@@ -3,7 +3,10 @@ import fastifyCors from "@fastify/cors";
 import fastifyHelmet from "@fastify/helmet";
 import fastifyJwt from "@fastify/jwt";
 import fastifyRateLimit from "@fastify/rate-limit";
+import fastifyStatic from "@fastify/static";
 import fastify from "fastify";
+import fs from "node:fs";
+import path from "node:path";
 import { configuracaoAmbiente } from "./configuracao/ambiente.js";
 import { tratadorErros } from "./compartilhado/erros/tratador_erros.js";
 import { rotasAutenticacao } from "./modulos/autenticacao/rotas/rotas_autenticacao.js";
@@ -99,6 +102,29 @@ export function criarAplicativo() {
   aplicativo.register(rotasRelatorios);
   aplicativo.register(rotasDashboard);
   aplicativo.register(rotasAuditoria);
+
+  // Servir frontend em produção se a pasta dist existir
+  const caminhoDistFrontend = path.resolve(__dirname, "../../frontend/dist");
+
+  if (fs.existsSync(caminhoDistFrontend)) {
+    aplicativo.register(fastifyStatic, {
+      root: caminhoDistFrontend,
+      prefix: "/",
+      wildcard: false
+    });
+
+    aplicativo.setNotFoundHandler((requisicao, resposta) => {
+      if (requisicao.raw.url && requisicao.raw.url.startsWith("/api")) {
+        return resposta.status(404).send({
+          erro: {
+            codigo: "ROTA_NAO_ENCONTRADA",
+            mensagem: `Rota ${requisicao.method} ${requisicao.url} não encontrada`
+          }
+        });
+      }
+      return resposta.sendFile("index.html");
+    });
+  }
 
   return aplicativo;
 }

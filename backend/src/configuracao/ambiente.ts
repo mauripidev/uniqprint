@@ -5,6 +5,13 @@ const schemaAmbiente = z.object({
   PORTA: z.coerce.number().default(3001),
   HOST: z.string().default("0.0.0.0"),
   AMBIENTE: z.enum(["development", "production", "test"]).default("development"),
+  COOKIE_SEGURO: z
+    .preprocess((val) => {
+      if (val === "true" || val === true) return true;
+      if (val === "false" || val === false) return false;
+      return process.env.AMBIENTE === "production";
+    }, z.boolean())
+    .default(false),
   BANCO_DE_DADOS_URL: z.string().min(1, "A variável BANCO_DE_DADOS_URL é obrigatória"),
   JWT_SEGREDO: z.string().min(16, "A variável JWT_SEGREDO deve ter no mínimo 16 caracteres"),
   COOKIE_SEGREDO: z.string().min(16, "A variável COOKIE_SEGREDO deve ter no mínimo 16 caracteres"),
