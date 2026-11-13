@@ -12,7 +12,8 @@ export class ControladorVendas {
 
   async criar(requisicao: FastifyRequest, resposta: FastifyReply) {
     const dados = schemaCriarVenda.parse(requisicao.body);
-    const venda = await this.servicoVendas.registrarVenda(dados);
+    const usuarioId = requisicao.usuarioAutenticado?.id;
+    const venda = await this.servicoVendas.registrarVenda(dados, usuarioId);
 
     return resposta.status(201).send({
       dados: venda,

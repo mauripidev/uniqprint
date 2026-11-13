@@ -12,7 +12,8 @@ export class ControladorCompras {
 
   async criar(requisicao: FastifyRequest, resposta: FastifyReply) {
     const dados = schemaCriarCompra.parse(requisicao.body);
-    const compra = await this.servicoCompras.registrarCompra(dados);
+    const usuarioId = requisicao.usuarioAutenticado?.id;
+    const compra = await this.servicoCompras.registrarCompra(dados, usuarioId);
 
     return resposta.status(201).send({
       dados: compra,

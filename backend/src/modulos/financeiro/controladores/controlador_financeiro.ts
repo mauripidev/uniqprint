@@ -35,7 +35,8 @@ export class ControladorFinanceiro {
 
   criar = async (req: FastifyRequest, res: FastifyReply) => {
     const dados = schemaCriarLancamento.parse(req.body);
-    const resultado = await this.servico.criar(dados);
+    const usuarioId = req.usuarioAutenticado?.id;
+    const resultado = await this.servico.criar(dados, usuarioId);
     return res.status(201).send(resultado);
   };
 

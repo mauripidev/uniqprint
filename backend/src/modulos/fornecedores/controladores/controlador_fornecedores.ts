@@ -13,7 +13,8 @@ export class ControladorFornecedores {
 
   async criar(requisicao: FastifyRequest, resposta: FastifyReply) {
     const dados = schemaCriarFornecedor.parse(requisicao.body);
-    const fornecedor = await this.servicoFornecedores.criarFornecedor(dados);
+    const usuarioId = requisicao.usuarioAutenticado?.id;
+    const fornecedor = await this.servicoFornecedores.criarFornecedor(dados, usuarioId);
 
     return resposta.status(201).send({
       dados: fornecedor,

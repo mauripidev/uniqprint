@@ -39,6 +39,7 @@ export interface DadosTransacaoCompra {
   data_compra?: Date;
   produto_descricao: string;
   fornecedor_nome: string;
+  usuario_id?: number | null;
 }
 
 export interface RepositorioCompras {
@@ -158,6 +159,25 @@ export class RepositorioComprasPrisma implements RepositorioCompras {
           tipo_referencia: "COMPRA",
           referencia_id: compra.id,
           observacao: `Lançamento automático de saída pela compra #${compra.id} (Fornecedor: ${dados.fornecedor_nome})`
+        }
+      });
+
+      // 5. Registrar auditoria da compra na mesma transação atômica
+      await tx.registroAuditoria.create({
+        data: {
+          usuario_id: dados.usuario_id ?? null,
+          acao: "CRIAR_COMPRA",
+          entidade: "COMPRA",
+          entidade_id: compra.id,
+          dados: JSON.stringify({
+            produto_id: dados.produto_id,
+            produto_descricao: dados.produto_descricao,
+            fornecedor_id: dados.fornecedor_id,
+            fornecedor_nome: dados.fornecedor_nome,
+            quantidade: dados.quantidade,
+            valor_unitario: dados.valor_unitario,
+            valor_total: dados.valor_total
+          })
         }
       });
 

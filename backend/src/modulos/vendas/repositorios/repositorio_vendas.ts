@@ -40,6 +40,7 @@ export interface DadosTransacaoVenda {
   data_venda?: Date;
   produto_descricao: string;
   cliente_nome: string;
+  usuario_id?: number | null;
 }
 
 export interface RepositorioVendas {
@@ -200,7 +201,26 @@ export class RepositorioVendasPrisma implements RepositorioVendas {
         }
       });
 
-      // 5. Retornar a venda completa com relacionamentos
+      // 5. Registrar auditoria da venda dentro da mesma transação atômica
+      await tx.registroAuditoria.create({
+        data: {
+          usuario_id: dados.usuario_id ?? null,
+          acao: "CRIAR_VENDA",
+          entidade: "VENDA",
+          entidade_id: venda.id,
+          dados: JSON.stringify({
+            cliente_id: dados.cliente_id,
+            cliente_nome: dados.cliente_nome,
+            produto_id: dados.produto_id,
+            produto_descricao: dados.produto_descricao,
+            quantidade: dados.quantidade,
+            valor_unitario: dados.valor_unitario,
+            valor_total: dados.valor_total
+          })
+        }
+      });
+
+      // 6. Retornar a venda completa com relacionamentos
       return tx.venda.findUniqueOrThrow({
         where: { id: venda.id },
         include: {

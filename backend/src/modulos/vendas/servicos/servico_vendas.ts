@@ -47,7 +47,10 @@ export class ServicoVendas {
     };
   }
 
-  async registrarVenda(dados: RequisicaoCriarVenda): Promise<VendaResposta> {
+  async registrarVenda(
+    dados: RequisicaoCriarVenda,
+    usuarioId?: number
+  ): Promise<VendaResposta> {
     // 1. Validação de quantidade
     if (!dados.quantidade || dados.quantidade <= 0 || !Number.isInteger(dados.quantidade)) {
       throw new ErroAplicacao(
@@ -124,7 +127,8 @@ export class ServicoVendas {
       valor_total: valorTotalCalculado,
       data_venda: dados.data_venda,
       produto_descricao: produto.descricao,
-      cliente_nome: cliente.nome
+      cliente_nome: cliente.nome,
+      usuario_id: usuarioId
     });
 
     return this.mapearParaResposta(vendaCriada);

@@ -23,7 +23,8 @@ export class ControladorEstoque {
 
   registrarAjuste = async (req: FastifyRequest, res: FastifyReply) => {
     const dados = schemaRegistrarAjuste.parse(req.body);
-    const resultado = await this.servicoEstoque.registrarAjuste(dados);
+    const usuarioId = req.usuarioAutenticado?.id;
+    const resultado = await this.servicoEstoque.registrarAjuste(dados, usuarioId);
     return res.status(201).send({
       dados: resultado,
       mensagem: "Ajuste de estoque registrado com sucesso."

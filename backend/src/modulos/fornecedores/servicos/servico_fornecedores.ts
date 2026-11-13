@@ -9,11 +9,13 @@ import {
   RepositorioFornecedores,
   RepositorioFornecedoresPrisma
 } from "../repositorios/repositorio_fornecedores.js";
+import { ServicoAuditoria } from "../../auditoria/servicos/servico_auditoria.js";
 import { Fornecedor } from "@prisma/client";
 
 export class ServicoFornecedores {
   constructor(
-    private repositorioFornecedores: RepositorioFornecedores = new RepositorioFornecedoresPrisma()
+    private repositorioFornecedores: RepositorioFornecedores = new RepositorioFornecedoresPrisma(),
+    private servicoAuditoria: ServicoAuditoria = new ServicoAuditoria()
   ) {}
 
   private mapearParaResposta(fornecedor: Fornecedor): FornecedorResposta {
@@ -27,7 +29,10 @@ export class ServicoFornecedores {
     };
   }
 
-  async criarFornecedor(dados: RequisicaoCriarFornecedor): Promise<FornecedorResposta> {
+  async criarFornecedor(
+    dados: RequisicaoCriarFornecedor,
+    usuarioId?: number
+  ): Promise<FornecedorResposta> {
     const nomeNormalizado = dados.nome.trim();
 
     if (!nomeNormalizado) {
@@ -45,6 +50,17 @@ export class ServicoFornecedores {
     const novoFornecedor = await this.repositorioFornecedores.criar({
       nome: nomeNormalizado,
       observacao: observacaoNormalizada
+    });
+
+    await this.servicoAuditoria.registrarAuditoria({
+      usuario_id: usuarioId ?? null,
+      acao: "CRIAR_FORNECEDOR",
+      entidade: "FORNECEDOR",
+      entidade_id: novoFornecedor.id,
+      dados: {
+        nome: novoFornecedor.nome,
+        observacao: novoFornecedor.observacao
+      }
     });
 
     return this.mapearParaResposta(novoFornecedor);

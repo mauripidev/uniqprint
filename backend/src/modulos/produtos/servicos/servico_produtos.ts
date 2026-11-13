@@ -5,15 +5,14 @@ import {
   RequisicaoConsultarProdutos,
   RequisicaoCriarProduto
 } from "../dtos/produto_dto.js";
-import {
-  RepositorioProdutos,
-  RepositorioProdutosPrisma
-} from "../repositorios/repositorio_produtos.js";
+import { RepositorioProdutos, RepositorioProdutosPrisma } from "../repositorios/repositorio_produtos.js";
+import { ServicoAuditoria } from "../../auditoria/servicos/servico_auditoria.js";
 import { Produto } from "@prisma/client";
 
 export class ServicoProdutos {
   constructor(
-    private repositorioProdutos: RepositorioProdutos = new RepositorioProdutosPrisma()
+    private repositorioProdutos: RepositorioProdutos = new RepositorioProdutosPrisma(),
+    private servicoAuditoria: ServicoAuditoria = new ServicoAuditoria()
   ) {}
 
   private mapearParaResposta(produto: Produto): ProdutoResposta {
@@ -27,7 +26,10 @@ export class ServicoProdutos {
     };
   }
 
-  async criarProduto(dados: RequisicaoCriarProduto): Promise<ProdutoResposta> {
+  async criarProduto(
+    dados: RequisicaoCriarProduto,
+    usuarioId?: number
+  ): Promise<ProdutoResposta> {
     const descricaoNormalizada = dados.descricao.trim();
 
     if (!descricaoNormalizada) {
@@ -49,6 +51,17 @@ export class ServicoProdutos {
     const novoProduto = await this.repositorioProdutos.criar({
       descricao: descricaoNormalizada,
       quantidade_estoque: dados.quantidade_estoque ?? 0
+    });
+
+    await this.servicoAuditoria.registrarAuditoria({
+      usuario_id: usuarioId ?? null,
+      acao: "CRIAR_PRODUTO",
+      entidade: "PRODUTO",
+      entidade_id: novoProduto.id,
+      dados: {
+        descricao: novoProduto.descricao,
+        quantidade_estoque: novoProduto.quantidade_estoque
+      }
     });
 
     return this.mapearParaResposta(novoProduto);
@@ -97,7 +110,8 @@ export class ServicoProdutos {
 
   async atualizarProduto(
     id: number,
-    dados: RequisicaoAtualizarProduto
+    dados: RequisicaoAtualizarProduto,
+    usuarioId?: number
   ): Promise<ProdutoResposta> {
     if (!id || isNaN(id)) {
       throw new ErroAplicacao("ID do produto inválido", "ID_INVALIDO", 400);
@@ -135,6 +149,17 @@ export class ServicoProdutos {
       id,
       dadosAtualizacao
     );
+
+    await this.servicoAuditoria.registrarAuditoria({
+      usuario_id: usuarioId ?? null,
+      acao: "ATUALIZAR_PRODUTO",
+      entidade: "PRODUTO",
+      entidade_id: produtoAtualizado.id,
+      dados: {
+        descricao: produtoAtualizado.descricao,
+        ativo: produtoAtualizado.ativo
+      }
+    });
 
     return this.mapearParaResposta(produtoAtualizado);
   }

@@ -47,7 +47,10 @@ export class ServicoCompras {
     };
   }
 
-  async registrarCompra(dados: RequisicaoCriarCompra): Promise<CompraResposta> {
+  async registrarCompra(
+    dados: RequisicaoCriarCompra,
+    usuarioId?: number
+  ): Promise<CompraResposta> {
     // 1. Validação de quantidade
     if (!dados.quantidade || dados.quantidade <= 0 || !Number.isInteger(dados.quantidade)) {
       throw new ErroAplicacao(
@@ -123,7 +126,8 @@ export class ServicoCompras {
       valor_total: valorTotalCalculado,
       data_compra: dados.data_compra,
       produto_descricao: produto.descricao,
-      fornecedor_nome: fornecedor.nome
+      fornecedor_nome: fornecedor.nome,
+      usuario_id: usuarioId
     });
 
     return this.mapearParaResposta(compraCriada);

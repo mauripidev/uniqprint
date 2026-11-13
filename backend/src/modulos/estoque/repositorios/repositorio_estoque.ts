@@ -41,6 +41,7 @@ export interface DadosTransacaoAjuste {
   tipo_ajuste: "ENTRADA" | "SAIDA";
   quantidade: number;
   observacao: string;
+  usuario_id?: number | null;
 }
 
 export interface ResultadoAjuste {
@@ -259,6 +260,24 @@ export class RepositorioEstoquePrisma implements RepositorioEstoque {
       const estoqueNovo = dados.tipo_ajuste === "ENTRADA"
         ? estoqueAnterior + dados.quantidade
         : estoqueAnterior - dados.quantidade;
+
+      // 5. Registrar auditoria do ajuste de estoque na mesma transação atômica
+      await tx.registroAuditoria.create({
+        data: {
+          usuario_id: dados.usuario_id ?? null,
+          acao: "AJUSTE_ESTOQUE",
+          entidade: "ESTOQUE",
+          entidade_id: movimentacao.id,
+          dados: JSON.stringify({
+            produto_id: dados.produto_id,
+            tipo_ajuste: dados.tipo_ajuste,
+            quantidade: dados.quantidade,
+            observacao: dados.observacao,
+            estoque_anterior: estoqueAnterior,
+            estoque_novo: estoqueNovo
+          })
+        }
+      });
 
       return {
         movimentacao,

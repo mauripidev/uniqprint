@@ -9,9 +9,13 @@ import {
   RepositorioFinanceiro,
   RepositorioFinanceiroPrisma
 } from "../repositorios/repositorio_financeiro.js";
+import { ServicoAuditoria } from "../../auditoria/servicos/servico_auditoria.js";
 
 export class ServicoFinanceiro {
-  constructor(private repositorio: RepositorioFinanceiro = new RepositorioFinanceiroPrisma()) {}
+  constructor(
+    private repositorio: RepositorioFinanceiro = new RepositorioFinanceiroPrisma(),
+    private servicoAuditoria: ServicoAuditoria = new ServicoAuditoria()
+  ) {}
 
   async listar(filtros: RequisicaoConsultarLancamentos) {
     const { pagina, limite, data_inicio, data_fim, categoria, tipo } = filtros;
@@ -72,8 +76,22 @@ export class ServicoFinanceiro {
     };
   }
 
-  async criar(dados: RequisicaoCriarLancamento) {
+  async criar(dados: RequisicaoCriarLancamento, usuarioId?: number) {
     const lancamento = await this.repositorio.criar(dados);
+
+    await this.servicoAuditoria.registrarAuditoria({
+      usuario_id: usuarioId ?? null,
+      acao: "CRIAR_LANCAMENTO_FINANCEIRO",
+      entidade: "LANCAMENTO_FINANCEIRO",
+      entidade_id: lancamento.id,
+      dados: {
+        tipo: lancamento.tipo,
+        descricao: lancamento.descricao,
+        valor: Number(lancamento.valor),
+        categoria: lancamento.categoria
+      }
+    });
+
     return {
       ...lancamento,
       valor: Number(lancamento.valor)

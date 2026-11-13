@@ -2040,4 +2040,184 @@ body {
   }
 }
 
+/* ==========================================================================
+   Auditoria do Sistema
+   ========================================================================== */
+
+.pagina-auditoria {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Badges de ação */
+.badge-auditoria {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.65rem;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.badge-info {
+  background-color: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.badge-sucesso {
+  background-color: rgba(74, 222, 128, 0.15);
+  color: #4ade80;
+  border: 1px solid rgba(74, 222, 128, 0.3);
+}
+
+.badge-aviso {
+  background-color: rgba(251, 191, 36, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.badge-perigo {
+  background-color: rgba(248, 113, 113, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.3);
+}
+
+.badge-neutro {
+  background-color: rgba(148, 163, 184, 0.15);
+  color: #94a3b8;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+/* Colunas especiais */
+.coluna-data-auditoria {
+  font-size: 0.8rem;
+  color: var(--texto-mutado);
+  white-space: nowrap;
+}
+
+.id-registro {
+  font-family: monospace;
+  color: var(--texto-mutado);
+  font-size: 0.85rem;
+}
+
+.nome-usuario-auditoria {
+  font-weight: 500;
+}
+
+.sem-usuario {
+  color: var(--texto-mutado);
+  font-style: italic;
+  font-size: 0.85rem;
+}
+
+.entidade-auditoria {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--texto-mutado);
+}
+
+/* Contador de registros */
+.badge-total-auditoria {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 1rem;
+  background-color: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: 99px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #38bdf8;
+}
+
+/* Modal de detalhes */
+.modal-auditoria-detalhe {
+  max-width: 660px;
+  width: 100%;
+}
+
+.grade-info-auditoria {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.info-auditoria-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.info-auditoria-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--texto-mutado);
+}
+
+.info-auditoria-valor {
+  font-size: 0.9rem;
+  color: var(--texto-titulo);
+  font-weight: 500;
+}
+
+.id-entidade {
+  font-size: 0.8rem;
+  color: var(--texto-mutado);
+}
+
+.email-usuario {
+  font-size: 0.8rem;
+  color: var(--texto-mutado);
+}
+
+/* Bloco de dados JSON */
+.secao-dados-auditoria {
+  margin-top: 0.5rem;
+  border-top: 1px solid var(--borda-suave);
+  padding-top: 1rem;
+}
+
+.titulo-dados-auditoria {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--texto-mutado);
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.pre-dados-auditoria {
+  background-color: var(--fundo-principal);
+  border: 1px solid var(--borda-suave);
+  border-radius: var(--raio-borda);
+  padding: 1rem;
+  font-size: 0.78rem;
+  font-family: "Fira Code", "Consolas", monospace;
+  line-height: 1.6;
+  color: #7dd3fc;
+  overflow-x: auto;
+  max-height: 300px;
+  overflow-y: auto;
+  white-space: pre;
+}
+
+@media (max-width: 768px) {
+  .grade-info-auditoria {
+    grid-template-columns: 1fr;
+  }
+}
 

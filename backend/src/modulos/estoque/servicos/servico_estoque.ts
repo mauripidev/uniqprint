@@ -104,7 +104,10 @@ export class ServicoEstoque {
     };
   }
 
-  async registrarAjuste(dados: RequisicaoRegistrarAjuste): Promise<AjusteResposta> {
+  async registrarAjuste(
+    dados: RequisicaoRegistrarAjuste,
+    usuarioId?: number
+  ): Promise<AjusteResposta> {
     // 1. Validação de quantidade
     if (!dados.quantidade || dados.quantidade <= 0 || !Number.isInteger(dados.quantidade)) {
       throw new ErroAplicacao(
@@ -159,7 +162,8 @@ export class ServicoEstoque {
       produto_id: dados.produto_id,
       tipo_ajuste: dados.tipo_ajuste,
       quantidade: dados.quantidade,
-      observacao: dados.observacao.trim()
+      observacao: dados.observacao.trim(),
+      usuario_id: usuarioId
     });
 
     return {

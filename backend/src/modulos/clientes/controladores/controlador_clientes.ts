@@ -13,7 +13,8 @@ export class ControladorClientes {
 
   async criar(requisicao: FastifyRequest, resposta: FastifyReply) {
     const dados = schemaCriarCliente.parse(requisicao.body);
-    const cliente = await this.servicoClientes.criarCliente(dados);
+    const usuarioId = requisicao.usuarioAutenticado?.id;
+    const cliente = await this.servicoClientes.criarCliente(dados, usuarioId);
 
     return resposta.status(201).send({
       dados: cliente,

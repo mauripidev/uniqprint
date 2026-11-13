@@ -16,6 +16,7 @@ import { rotasEstoque } from "./modulos/estoque/rotas/rotas_estoque.js";
 import { rotasFinanceiro } from "./modulos/financeiro/rotas/rotas_financeiro.js";
 import { rotasRelatorios } from "./modulos/relatorios/rotas/rotas_relatorios.js";
 import { rotasDashboard } from "./modulos/dashboard/rotas/rotas_dashboard.js";
+import { rotasAuditoria } from "./modulos/auditoria/rotas/rotas_auditoria.js";
 
 
 export function criarAplicativo() {
@@ -97,6 +98,7 @@ export function criarAplicativo() {
   aplicativo.register(rotasFinanceiro);
   aplicativo.register(rotasRelatorios);
   aplicativo.register(rotasDashboard);
+  aplicativo.register(rotasAuditoria);
 
   return aplicativo;
 }

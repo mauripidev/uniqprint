@@ -9,6 +9,7 @@ import {
   RepositorioClientes,
   RepositorioClientesPrisma
 } from "../repositorios/repositorio_clientes.js";
+import { ServicoAuditoria } from "../../auditoria/servicos/servico_auditoria.js";
 import { Cliente } from "@prisma/client";
 
 function validarTelefoneFormato(telefone?: string | null): boolean {
@@ -21,7 +22,8 @@ function validarTelefoneFormato(telefone?: string | null): boolean {
 
 export class ServicoClientes {
   constructor(
-    private repositorioClientes: RepositorioClientes = new RepositorioClientesPrisma()
+    private repositorioClientes: RepositorioClientes = new RepositorioClientesPrisma(),
+    private servicoAuditoria: ServicoAuditoria = new ServicoAuditoria()
   ) {}
 
   private mapearParaResposta(cliente: Cliente): ClienteResposta {
@@ -36,7 +38,10 @@ export class ServicoClientes {
     };
   }
 
-  async criarCliente(dados: RequisicaoCriarCliente): Promise<ClienteResposta> {
+  async criarCliente(
+    dados: RequisicaoCriarCliente,
+    usuarioId?: number
+  ): Promise<ClienteResposta> {
     const nomeNormalizado = dados.nome?.trim();
 
     if (!nomeNormalizado) {
@@ -65,6 +70,18 @@ export class ServicoClientes {
       nome: nomeNormalizado,
       telefone: telefoneNormalizado,
       observacao: observacaoNormalizada
+    });
+
+    await this.servicoAuditoria.registrarAuditoria({
+      usuario_id: usuarioId ?? null,
+      acao: "CRIAR_CLIENTE",
+      entidade: "CLIENTE",
+      entidade_id: novoCliente.id,
+      dados: {
+        nome: novoCliente.nome,
+        telefone: novoCliente.telefone,
+        observacao: novoCliente.observacao
+      }
     });
 
     return this.mapearParaResposta(novoCliente);

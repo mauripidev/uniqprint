@@ -11,7 +11,8 @@ export class ControladorProdutos {
 
   async criar(requisicao: FastifyRequest, resposta: FastifyReply) {
     const dados = schemaCriarProduto.parse(requisicao.body);
-    const produto = await this.servicoProdutos.criarProduto(dados);
+    const usuarioId = requisicao.usuarioAutenticado?.id;
+    const produto = await this.servicoProdutos.criarProduto(dados, usuarioId);
 
     return resposta.status(201).send({
       dados: produto,
@@ -45,7 +46,8 @@ export class ControladorProdutos {
   ) {
     const id = Number(requisicao.params.id);
     const dados = schemaAtualizarProduto.parse(requisicao.body);
-    const produto = await this.servicoProdutos.atualizarProduto(id, dados);
+    const usuarioId = requisicao.usuarioAutenticado?.id;
+    const produto = await this.servicoProdutos.atualizarProduto(id, dados, usuarioId);
 
     return resposta.status(200).send({
       dados: produto,

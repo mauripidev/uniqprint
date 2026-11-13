@@ -18,7 +18,27 @@ model Usuario {
   atualizado_em   DateTime  @updatedAt
   ultimo_login_em DateTime?
 
+  registros_auditoria RegistroAuditoria[]
+
   @@map("usuarios")
+}
+
+model RegistroAuditoria {
+  id          Int      @id @default(autoincrement())
+  usuario_id  Int?
+  acao        String
+  entidade    String
+  entidade_id Int?
+  dados       String?  @db.Text
+  criado_em   DateTime @default(now())
+
+  usuario     Usuario? @relation(fields: [usuario_id], references: [id], onDelete: SetNull)
+
+  @@index([usuario_id])
+  @@index([acao])
+  @@index([entidade])
+  @@index([criado_em])
+  @@map("registros_auditoria")
 }
 
 model Produto {
